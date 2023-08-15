@@ -1,0 +1,10 @@
+body{
+    background-color: rgb(227, 245, 245);
+    padding:0px;
+    margin:0px;
+  }
+  #root{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));;
+    grid-template-rows: auto
+  }
