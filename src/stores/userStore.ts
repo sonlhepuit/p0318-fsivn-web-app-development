@@ -71,6 +71,7 @@ export class UserStore {
     }
 
     logout() {}
+    
 
     async fetchUser(navigate: NavigateFunction) {
         console.log(navigate);
