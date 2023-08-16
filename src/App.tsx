@@ -12,7 +12,7 @@ import store from './stores/rootStore';
 
 export const App: React.FC = () => (
     <React.StrictMode>
-        <Provider {...store}>
+        <Provider {...store} >
             <ConfigProvider theme={theme}>
                 <RouterProvider router={router} />
             </ConfigProvider>

@@ -1,9 +1,8 @@
 import axios, { AxiosProgressEvent } from 'axios';
 
-const apiUrl = 'https://testapi.xd-twin.io';
-const token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNzAzNzc1NGRiMjAzNWU3Y2FjMDU3YSIsImlhdCI6MTY5MTQ3ODEyNSwiZXhwIjoxNjk0MDcwMTI1fQ.pyVvMFl93aDiNED4YcxW_wIai527ulOQI-DwygzqBww';
-// import userStore from './stores/userStore';
+const apiUrl = process.env.REACT_APP_API_URL;
+// const token = process.env.REACT_APP_TOKEN;
+const token = localStorage.getItem('jwt');
 
 const requests = {
     get: (url: string, header = false, urlstatic = true) => {
@@ -98,8 +97,8 @@ const requests = {
     },
 };
 
-const Auth = {
-    current: () => requests.get('/user', true, true),
+const AuthRequest = {
+    me: () => requests.get(`/users/me`, true),
     login: (email: string, password: string) =>
         requests.post('/xdLogin', { identifier: email, password }),
     register: (username: string, email: string, password: string) =>
@@ -108,7 +107,7 @@ const Auth = {
 };
 
 const agent = {
-    Auth,
+    AuthRequest,
 };
 
 export default agent;

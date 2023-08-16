@@ -5,10 +5,10 @@ import { inject, observer } from 'mobx-react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { ButtonLogin } from './styled';
-import userStore from '../../../stores/userStore';
+import  {UserStore} from '../../../stores/userStore';
 import { CustomNavLink } from '../AuthPage/styled';
 interface ComponentProps {
-    userStore?: userStore;
+    userStore?: UserStore;
 }
 type FieldType = {
     username?: string;
@@ -17,13 +17,14 @@ type FieldType = {
 };
 
 const Login: React.FC<ComponentProps> = ({ userStore }) => {
+
     const [form] = Form.useForm();
     const navigate = useNavigate();
 
     const onFinish = () => {
         form.validateFields()
             .then(async (values) => {
-                await userStore?.login(values.username, values.password, navigate);
+                await userStore?.login(values.username, values.password,values.remember, navigate);
             })
             .catch((err) => {
                 onFinishFailed(err);

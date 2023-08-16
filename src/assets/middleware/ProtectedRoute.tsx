@@ -4,7 +4,7 @@ import { inject, observer } from 'mobx-react';
 import ReactLoading from 'react-loading';
 import { Navigate, useNavigate } from 'react-router';
 
-import UserStore from '../../stores/userStore';
+import {UserStore} from '../../stores/userStore';
 
 interface ProtectedRouteProps {
     userStore?: UserStore;

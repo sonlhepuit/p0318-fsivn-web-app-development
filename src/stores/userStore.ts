@@ -1,8 +1,9 @@
+import { AxiosError, AxiosResponse } from 'axios';
 import { makeAutoObservable } from 'mobx';
 import { NavigateFunction } from 'react-router';
 
-import { RootStore } from './rootStore';
 import request from '../requests';
+const { AuthRequest } = request;
 
 export type User = {
     id: number;
@@ -20,31 +21,56 @@ export class UserStore {
     loadingUser?: boolean;
     updatingUser?: boolean;
     updatingUserErrors: any;
-    rootStore?: any;
-    token?: string;
+    token: string | null | undefined = localStorage.getItem('jwt');
 
-    constructor(rootStore: RootStore) {
-        this.rootStore = rootStore;
+    constructor() {
         makeAutoObservable(this);
     }
 
-    async login(email: string, password: string, navigate: NavigateFunction) {
+    async login(email: string, password: string, isRemember : boolean , navigate: NavigateFunction) {
         return new Promise(async (resolve, reject) => {
             const waitcompleted = async () => {
-                request.Auth.login(email, password)
-                    .then((response) => {
+                AuthRequest.login(email, password)
+                    .then((response: AxiosResponse) => {
                         if (response?.data) {
                             navigate('/home');
+                            this.token = response?.data?.jwt;
+                            this.currentUser = response?.data?.user;
+                            if (isRemember) {
+                                localStorage.setItem('jwt', response.data.jwt)
+                            } else {
+                                sessionStorage.setItem('jwt', response.data.jwt)
+                            }
                         }
                         resolve(response.data);
                     })
-                    .catch((err) => {
+                    .catch((err: AxiosError | any) => {
                         reject(err);
                     });
             };
             await waitcompleted();
         });
     }
+
+    async me(navigate: NavigateFunction) {
+        return new Promise(async (resolve, reject) => {
+            const waitcompleted = async () => {
+                AuthRequest.me()
+                    .then((response: AxiosResponse) => {
+                        if (response?.data) {
+                            navigate('/home');
+                        }
+                        resolve(response.data);
+                    })
+                    .catch((err: AxiosError | any) => {
+                        reject(err);
+                    });
+            };
+            await waitcompleted();
+        });
+    }
+
+    logout() {}
 
     async fetchUser(navigate: NavigateFunction) {
         console.log(navigate);
@@ -56,4 +82,5 @@ export class UserStore {
     }
 }
 
-export default UserStore;
+const userStore = new UserStore();
+export default userStore;

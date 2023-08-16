@@ -5,19 +5,17 @@ import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 
 import { AuthPageWrapper, FormSubtitle, FormTitle, FormWrapper } from './styled';
-import userStore from '../../../stores/userStore';
+import {UserStore} from '../../../stores/userStore';
 import LoginForm from '../Login/Login';
 
 interface ComponentProps {
-    userStore?: userStore;
+    userStore?: UserStore;
 }
 
-const AuthPage: React.FC<ComponentProps> = ({ userStore }) => {
+const AuthPage: React.FC<ComponentProps> = ({  }) => {
     const { authType } = useParams();
 
     useEffect(() => {}, []);
-
-    console.log('userStore', userStore);
 
     const authFormInput = () => {
         switch (authType) {

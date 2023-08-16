@@ -4,7 +4,7 @@ export class RootStore {
     userStore: UserStore;
 
     constructor() {
-        this.userStore = new UserStore(this);
+        this.userStore = new UserStore();
     }
 }
 const rootStore = new RootStore();
